@@ -72,3 +72,9 @@ gulp.task('open', function () {
 
 // This is the default task that runs everything
 gulp.task("default", ["transpile", "html", "css", "connect", "open", "watch"]);
+
+// Handle the error
+function errorHandler (error) {
+  console.log(error.toString());
+  this.emit('end');
+}
