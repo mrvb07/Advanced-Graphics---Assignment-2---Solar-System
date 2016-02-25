@@ -87,7 +87,7 @@ function init() {
 
 
     var geometry1 = new THREE.SphereGeometry(0.5, 32, 32);
-    var material1 = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+    var material1 = new THREE.MeshLambertMaterial({ color: 0xCCC02B });
     var planetA = new Mesh(geometry1, material1);
     planetA.position.set(15, 0, 0);
     gameObject = new Mesh();
@@ -95,11 +95,12 @@ function init() {
     gameObject.add(planetA);
 
     var geometry2 = new THREE.SphereGeometry(1, 32, 32);
-    //var material = new THREE.MeshBasicMaterial( {color: 0xff5500} );
-    var planetB = new Mesh(geometry2, material1);
+    var material2 = new THREE.MeshLambertMaterial( {color: 0x943E0F} );
+    var planetB = new Mesh(geometry2, material2);
     planetB.position.set(30, 0, 0);
     var geometry7 = new THREE.SphereGeometry(0.4, 32, 32);
-    var moon1 = new Mesh(geometry7, material1);
+    var moon1material = new THREE.MeshLambertMaterial( {color: 0xFEFCD7} );
+    var moon1 = new Mesh(geometry7, moon1material);
     moon1.position.set(4, 0, 0);
     gameObject6 = new Mesh();
     gameObject6.position.set(0, 0, 0);
@@ -111,8 +112,8 @@ function init() {
     gameObject1.add(planetB);
 
     var geometry3 = new THREE.SphereGeometry(1.5, 32, 32);
-    //var material = new THREE.MeshBasicMaterial( {color: 0xff3300} );
-    var planetC = new Mesh(geometry3, material1);
+    var material3 = new THREE.MeshLambertMaterial( {color: 0xff3300} );
+    var planetC = new Mesh(geometry3, material3);
     planetC.position.set(45, 0, 0);
     gameObject2 = new Mesh();
     gameObject2.position.set(0, 0, 0);
@@ -120,11 +121,12 @@ function init() {
 
 
     var geometry4 = new THREE.SphereGeometry(2, 32, 32);
-    //var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('earth.jpg') });
-    var planetD = new Mesh(geometry4, material1);
+    var material4 = new THREE.MeshLambertMaterial({color: 0x28726E});
+    var planetD = new Mesh(geometry4, material4);
     planetD.position.set(60, 0, 0);
     var geometry6 = new THREE.SphereGeometry(0.4, 32, 32);
-    var moon = new Mesh(geometry6, material1);
+    var moonmaterial = new THREE.MeshLambertMaterial( {color: 0xff9999} );
+    var moon = new Mesh(geometry6, moonmaterial);
     moon.position.set(5, 0, 0);
     gameObject5 = new Mesh();
     gameObject5.position.set(0, 0, 0);
@@ -137,8 +139,8 @@ function init() {
 
 
     var geometry5 = new THREE.SphereGeometry(0.75, 32, 32);
-    // var material = new THREE.MeshBasicMaterial( {color: 0xff0000} );
-    var planetE = new Mesh(geometry5, material1);
+    var material5 = new THREE.MeshLambertMaterial( {color: 0xff0000} );
+    var planetE = new Mesh(geometry5, material5);
     planetE.position.set(75, 0, 0);
 
     gameObject4 = new Mesh();
@@ -291,10 +293,10 @@ function setupRenderer(): void {
 function setupCamera(): void {
     camera = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
     //camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = 0;
-    camera.position.y = 50;
-    camera.position.z = 100;
-    camera.lookAt(new Vector3(0, 0, 0));
+    camera.position.x = 10;
+    camera.position.y = 60;
+    camera.position.z = 120;
+    camera.lookAt(new Vector3(0, -10, 0));
     console.log("Finished setting up Camera...");
 
     camera1 = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
@@ -307,9 +309,9 @@ function setupCamera(): void {
     
     camera2 = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
     //camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera2.position.x = 15;
+    camera2.position.x = 8;
     camera2.position.y = 0;
-    camera2.position.z = 10;
+    camera2.position.z = 5;
     camera2.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera2...");
 }
