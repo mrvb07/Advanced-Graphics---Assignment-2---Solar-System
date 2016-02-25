@@ -2,9 +2,9 @@
 // MAIN GAME FILE
 //Source file name      game.ts
 //Last Modified by      Vinay Bhardwaj
-//Date last Modified    February 5,2016
-//Program description   COMP392-Assignment 1-CubeMan    
-//Revision History      v10
+//Date last Modified    February 25,2016
+//Program description   COMP392-Assignment 2 - Solar System    
+//Revision History      v4
 // THREEJS Aliases
 var Scene = THREE.Scene;
 var Renderer = THREE.WebGLRenderer;
@@ -28,17 +28,19 @@ var Vector3 = THREE.Vector3;
 var Face3 = THREE.Face3;
 var Point = objects.Point;
 var CScreen = config.Screen;
-//Custom Game Objects
+//Custom empty Game Objects
 var gameObject;
 var gameObject1;
 var gameObject2;
 var gameObject3;
 var gameObject4;
 var gameObject5;
+var gameObject6;
 var scene;
 var renderer;
 var camera;
 var camera1;
+var camera2;
 var axes;
 var ambientLight;
 var spotLight;
@@ -78,6 +80,14 @@ function init() {
     //var material = new THREE.MeshBasicMaterial( {color: 0xff5500} );
     var planetB = new Mesh(geometry2, material1);
     planetB.position.set(30, 0, 0);
+    var geometry7 = new THREE.SphereGeometry(0.4, 32, 32);
+    var moon1 = new Mesh(geometry7, material1);
+    moon1.position.set(4, 0, 0);
+    gameObject6 = new Mesh();
+    gameObject6.position.set(0, 0, 0);
+    gameObject6.add(moon1);
+    planetB.add(gameObject6);
+    planetB.add(camera2);
     gameObject1 = new Mesh();
     gameObject1.position.set(0, 0, 0);
     gameObject1.add(planetB);
@@ -89,7 +99,7 @@ function init() {
     gameObject2.position.set(0, 0, 0);
     gameObject2.add(planetC);
     var geometry4 = new THREE.SphereGeometry(2, 32, 32);
-    var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('earth.jpg') });
+    //var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('earth.jpg') });
     var planetD = new Mesh(geometry4, material1);
     planetD.position.set(60, 0, 0);
     var geometry6 = new THREE.SphereGeometry(0.4, 32, 32);
@@ -110,6 +120,7 @@ function init() {
     gameObject4 = new Mesh();
     gameObject4.position.set(0, 0, 0);
     gameObject4.add(planetE);
+    //Adding game objects to the scene
     scene.add(sun);
     scene.add(gameObject);
     scene.add(gameObject1);
@@ -117,10 +128,10 @@ function init() {
     scene.add(gameObject3);
     scene.add(gameObject4);
     //Add an AmbientLight to the scene
-    // ambientLight = new AmbientLight(0xffffff);
-    // scene.add(ambientLight);
-    // console.log("Added an Ambient Light to Scene");
-    // Add a SpotLight to the scene
+    ambientLight = new AmbientLight(0x333333);
+    scene.add(ambientLight);
+    console.log("Added an Ambient Light to Scene");
+    //Adding multiple SpotLights to the scene
     spotLight = new SpotLight(0xffffff, 30);
     spotLight.position.set(5, 0, 0);
     spotLight.lookAt(new Vector3(150, 0, 0));
@@ -153,10 +164,10 @@ function init() {
     spotLight3.shadowMapWidth = 2048;
     spotLight3.shadowCameraNear = 1;
     scene.add(spotLight3);
-    console.log("Added a SpotLight Light to Scene");
+    console.log("Added all the SpotLight Lights to Scene");
     // add controls
     gui = new GUI();
-    control = new Control(0);
+    control = new Control(1);
     addControl(control);
     // Add framerate stats
     addStatsObject();
@@ -173,7 +184,7 @@ function onResize() {
     renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
 }
 function addControl(controlObject) {
-    gui.add(controlObject, 'cam', 0, 1);
+    gui.add(controlObject, 'cam', 0, 2);
 }
 function addStatsObject() {
     stats = new Stats();
@@ -192,16 +203,21 @@ function gameLoop() {
     gameObject2.rotation.y += 0.025;
     gameObject3.rotation.y += 0.015;
     gameObject4.rotation.y += 0.009;
-    gameObject5.rotation.y += 0.020;
+    gameObject5.rotation.z += 0.020;
+    gameObject6.rotation.z += 0.020;
+    //gameObject5.rotation.y += 0.020;    
     //assigning control object to each cube
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
     cam = control.cam;
-    if (cam == 0) {
+    if (cam < 0.5) {
+        renderer.render(scene, camera1);
+    }
+    else if (cam >= 0.5 && cam <= 1.5) {
         renderer.render(scene, camera);
     }
     else {
-        renderer.render(scene, camera1);
+        renderer.render(scene, camera2);
     }
     //     renderer.render(scene, cam);
     // // if (cam == 2) {
@@ -215,7 +231,7 @@ function gameLoop() {
 // Setup default renderer
 function setupRenderer() {
     renderer = new Renderer();
-    renderer.setClearColor(0x222222, 1.0);
+    renderer.setClearColor(0x190000, 1.0);
     renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
     //renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -236,6 +252,13 @@ function setupCamera() {
     camera1.position.y = 0;
     camera1.position.z = 20;
     camera1.lookAt(new Vector3(0, 0, 0));
-    console.log("Finished setting up Camera...");
+    console.log("Finished setting up Camera1...");
+    camera2 = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
+    //camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera2.position.x = 15;
+    camera2.position.y = 0;
+    camera2.position.z = 10;
+    camera2.lookAt(new Vector3(0, 0, 0));
+    console.log("Finished setting up Camera2...");
 }
 //# sourceMappingURL=game.js.map

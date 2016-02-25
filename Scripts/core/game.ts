@@ -4,9 +4,9 @@
 
 //Source file name      game.ts
 //Last Modified by      Vinay Bhardwaj
-//Date last Modified    February 5,2016
-//Program description   COMP392-Assignment 1-CubeMan    
-//Revision History      v10
+//Date last Modified    February 25,2016
+//Program description   COMP392-Assignment 2 - Solar System    
+//Revision History      v4
 
 
 // THREEJS Aliases
@@ -33,18 +33,20 @@ import Face3 = THREE.Face3;
 import Point = objects.Point;
 import CScreen = config.Screen;
 
-//Custom Game Objects
+//Custom empty Game Objects
 var gameObject: Mesh;
 var gameObject1: Mesh;
 var gameObject2: Mesh;
 var gameObject3: Mesh;
 var gameObject4: Mesh;
 var gameObject5: Mesh;
+var gameObject6: Mesh;
 
 var scene: Scene;
 var renderer: Renderer;
 var camera: PerspectiveCamera;
 var camera1: PerspectiveCamera;
+var camera2: PerspectiveCamera;
 var axes: AxisHelper;
 var ambientLight: AmbientLight;
 var spotLight: SpotLight;
@@ -58,11 +60,7 @@ var step: number = 0;
 var sun: Mesh
 var cam: number;
 
-
-
-
 var group = new THREE.Object3D();
-
 
 function init() {
     // Instantiate a new Scene object
@@ -100,6 +98,14 @@ function init() {
     //var material = new THREE.MeshBasicMaterial( {color: 0xff5500} );
     var planetB = new Mesh(geometry2, material1);
     planetB.position.set(30, 0, 0);
+    var geometry7 = new THREE.SphereGeometry(0.4, 32, 32);
+    var moon1 = new Mesh(geometry7, material1);
+    moon1.position.set(4, 0, 0);
+    gameObject6 = new Mesh();
+    gameObject6.position.set(0, 0, 0);
+    gameObject6.add(moon1);
+    planetB.add(gameObject6);
+    planetB.add(camera2);
     gameObject1 = new Mesh();
     gameObject1.position.set(0, 0, 0);
     gameObject1.add(planetB);
@@ -114,24 +120,17 @@ function init() {
 
 
     var geometry4 = new THREE.SphereGeometry(2, 32, 32);
-    var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('earth.jpg') });
-
+    //var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('earth.jpg') });
     var planetD = new Mesh(geometry4, material1);
     planetD.position.set(60, 0, 0);
-
-
-
     var geometry6 = new THREE.SphereGeometry(0.4, 32, 32);
     var moon = new Mesh(geometry6, material1);
     moon.position.set(5, 0, 0);
-
-
     gameObject5 = new Mesh();
     gameObject5.position.set(0, 0, 0);
     gameObject5.add(moon);
     planetD.add(gameObject5);
     planetD.add(camera1);
-
     gameObject3 = new Mesh();
     gameObject3.position.set(0, 0, 0);
     gameObject3.add(planetD);
@@ -146,23 +145,22 @@ function init() {
     gameObject4.position.set(0, 0, 0);
     gameObject4.add(planetE);
 
+    
+    //Adding game objects to the scene
     scene.add(sun);
     scene.add(gameObject);
     scene.add(gameObject1);
     scene.add(gameObject2);
     scene.add(gameObject3);
     scene.add(gameObject4);
-
-    
-    
-    
     
     //Add an AmbientLight to the scene
-    // ambientLight = new AmbientLight(0xffffff);
-    // scene.add(ambientLight);
-    // console.log("Added an Ambient Light to Scene");
+    ambientLight = new AmbientLight(0x333333);
+    scene.add(ambientLight);
+    console.log("Added an Ambient Light to Scene");
 	
-    // Add a SpotLight to the scene
+    //Adding multiple SpotLights to the scene
+    
     spotLight = new SpotLight(0xffffff, 30);
     spotLight.position.set(5, 0, 0);
     spotLight.lookAt(new Vector3(150, 0, 0));
@@ -198,11 +196,12 @@ function init() {
     spotLight3.shadowMapWidth = 2048;
     spotLight3.shadowCameraNear = 1;
     scene.add(spotLight3);
-    console.log("Added a SpotLight Light to Scene");
+
+    console.log("Added all the SpotLight Lights to Scene");
     
     // add controls
     gui = new GUI();
-    control = new Control(0);
+    control = new Control(1);
     addControl(control);
     
     // Add framerate stats
@@ -225,7 +224,7 @@ function onResize(): void {
 
 function addControl(controlObject: Control): void {
 
-    gui.add(controlObject, 'cam', 0, 1);
+    gui.add(controlObject, 'cam', 0, 2);
 }
 
 function addStatsObject() {
@@ -246,18 +245,24 @@ function gameLoop(): void {
     gameObject2.rotation.y += 0.025;
     gameObject3.rotation.y += 0.015;
     gameObject4.rotation.y += 0.009;
-    gameObject5.rotation.y += 0.020;    
+    gameObject5.rotation.z += 0.020;
+    gameObject6.rotation.z += 0.020;
+    
+    //gameObject5.rotation.y += 0.020;    
     
     //assigning control object to each cube
     
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
     cam = control.cam;
-    if (cam == 0) {
+    if (cam < 0.5) {
+        renderer.render(scene, camera1);
+    }
+    else if(cam >= 0.5 && cam <=1.5 ) {
         renderer.render(scene, camera);
     }
-    else {
-        renderer.render(scene, camera1);
+    else{
+        renderer.render(scene, camera2);
     }
     
     
@@ -275,7 +280,7 @@ function gameLoop(): void {
 // Setup default renderer
 function setupRenderer(): void {
     renderer = new Renderer();
-    renderer.setClearColor(0x222222, 1.0);
+    renderer.setClearColor(0x190000, 1.0);
     renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
     //renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -292,13 +297,20 @@ function setupCamera(): void {
     camera.lookAt(new Vector3(0, 0, 0));
     console.log("Finished setting up Camera...");
 
-
     camera1 = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
     //camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera1.position.x = 25;
     camera1.position.y = 0;
     camera1.position.z = 20;
     camera1.lookAt(new Vector3(0, 0, 0));
-    console.log("Finished setting up Camera...");
+    console.log("Finished setting up Camera1...");
+    
+    camera2 = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
+    //camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera2.position.x = 15;
+    camera2.position.y = 0;
+    camera2.position.z = 10;
+    camera2.lookAt(new Vector3(0, 0, 0));
+    console.log("Finished setting up Camera2...");
 }
 
