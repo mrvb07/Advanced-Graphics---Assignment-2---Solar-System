@@ -1,7 +1,7 @@
 {
   "name": "comp392-assignment#2-solarsystem",
   "version": "1.0.0",
-  "description": "COMP392-Assignemt#2-SolarSystem for Centennial College",
+  "description": "COMP392-Assignment#2-SolarSystem for Centennial College",
   "main": "game.js",
   "dependencies": {
     "typescript": "^1.7.5"

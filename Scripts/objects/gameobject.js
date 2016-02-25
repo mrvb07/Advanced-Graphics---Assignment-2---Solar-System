@@ -1,9 +1,9 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 //Source file name      gameObject.ts
 //Last Modified by      Vinay Bhardwaj
-//Date last Modified    February 5,2016
-//Program description   COMP392-Assignment 1-CubeMan    
-//Revision History      v10
+//Date last Modified    February 25,2016
+//Program description   COMP392-Assignment 2-Solar System       
+//Revision History      v6
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }

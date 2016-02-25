@@ -4,7 +4,7 @@
 //Last Modified by      Vinay Bhardwaj
 //Date last Modified    February 25,2016
 //Program description   COMP392-Assignment 2 - Solar System    
-//Revision History      v4
+//Revision History      v6
 // THREEJS Aliases
 var Scene = THREE.Scene;
 var Renderer = THREE.WebGLRenderer;
