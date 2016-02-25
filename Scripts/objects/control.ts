@@ -9,17 +9,16 @@ module objects {
     // CONTROL CLASS ++++++++++++++++++++++++++++++++++++++++++
     export class Control { 
         //PUBLIC INSTANCE VARIABLES +++++++++++++++++++++++++++
+       
+       
+        public cam: number;
 
-        public RotationYaxis:number;
-
-       // public color:number;
+        // public color:number;
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        constructor(RotationYaxis:number) {
-           this.RotationYaxis = RotationYaxis;
-     
-         //  this.color = color;
+        constructor(cam: number) {
+            this.cam = cam;
         }
-        
-        //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
     }
+
 }
+

@@ -10,9 +10,8 @@ var objects;
     var Control = (function () {
         // public color:number;
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        function Control(RotationYaxis) {
-            this.RotationYaxis = RotationYaxis;
-            //  this.color = color;
+        function Control(cam) {
+            this.cam = cam;
         }
         return Control;
     })();

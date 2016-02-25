@@ -56,6 +56,8 @@ var gui: GUI;
 var stats: Stats;
 var step: number = 0;
 var sun: Mesh
+var cam: number;
+
 
 
 
@@ -112,7 +114,7 @@ function init() {
 
 
     var geometry4 = new THREE.SphereGeometry(2, 32, 32);
-    //var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('textures/earth.jpg') });
+    var material2 = new THREE.MeshPhongMaterial({ map: THREE.ImageUtils.loadTexture('earth.jpg') });
 
     var planetD = new Mesh(geometry4, material1);
     planetD.position.set(60, 0, 0);
@@ -156,9 +158,9 @@ function init() {
     
     
     //Add an AmbientLight to the scene
-    ambientLight = new AmbientLight(0xffffff);
-    scene.add(ambientLight);
-    console.log("Added an Ambient Light to Scene");
+    // ambientLight = new AmbientLight(0xffffff);
+    // scene.add(ambientLight);
+    // console.log("Added an Ambient Light to Scene");
 	
     // Add a SpotLight to the scene
     spotLight = new SpotLight(0xffffff, 30);
@@ -200,9 +202,9 @@ function init() {
     
     // add controls
     gui = new GUI();
-    control = new Control(0.001);
+    control = new Control(0);
     addControl(control);
-
+    
     // Add framerate stats
     addStatsObject();
     console.log("Added Stats to scene...");
@@ -223,8 +225,7 @@ function onResize(): void {
 
 function addControl(controlObject: Control): void {
 
-    gui.add(controlObject, 'RotationYaxis', -0.05, 0.05); //Adding control for rotation around Y-Axis
-    
+    gui.add(controlObject, 'cam', 0, 1);
 }
 
 function addStatsObject() {
@@ -251,9 +252,24 @@ function gameLoop(): void {
     
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
-	
-    // render the scene
-    renderer.render(scene, camera);
+    cam = control.cam;
+    if (cam == 0) {
+        renderer.render(scene, camera);
+    }
+    else {
+        renderer.render(scene, camera1);
+    }
+    
+    
+    //     renderer.render(scene, cam);
+    // // if (cam == 2) {
+    // //     renderer.render(scene, camera1);
+    // // }
+    // // else {
+    // //     renderer.render(scene, camera);
+    // // }
+    // // render the scene
+    
 }
 
 // Setup default renderer
